@@ -1,0 +1,74 @@
+@using Connect_Four_GAME.Components.Models
+@inject GameState Game
+
+<HeadContent>
+    <style>
+            :root {
+                --board-bg: #facc15;
+                --player1: #ef4444;
+                --player2: #2563eb;
+            }
+    </style>
+</HeadContent>
+
+<div class="game-container">
+    <h3 class="game-title">CONNECT FOUR</h3>
+    <p class="game-subtitle">Four in a row. Challenge your opponent!</p>
+
+    <p class="game-status">
+        @if (Game.GameOver)
+        {
+            @if (Game.Winner == 0)
+            {
+                <strong>It's a draw!</strong>
+            }
+            else
+            {
+                <strong>Player @Game.Winner wins!</strong>
+            }
+        }
+        else
+        {
+            <strong>Player @Game.CurrentPlayer's turn</strong>
+        }
+    </p>
+
+    <div class="board">
+        @for (var column = 0; column < GameState.Columns; column++)
+        {
+            var selectedColumn = column;
+
+            <div class="game-column" @onclick="() => PlayColumn(selectedColumn)" title="Click to drop a piece">
+
+                @for (var row = 0; row < GameState.Rows; row++)
+                {
+                    var position = row * GameState.Columns + selectedColumn;
+                    var piece = Game.Pieces[position];
+
+                    <span class="container">
+                        <span class="@(piece == 1 ? "player1" : piece == 2 ? "player2" : "")">
+                        </span>
+                    </span>
+                }
+            </div>
+        }
+    </div>
+
+    <button class="reset-button" @onclick="ResetGame">
+        New Game
+    </button>
+</div>
+
+@code {
+    private void PlayColumn(int column)
+    {
+        Game.PlayPiece(column);
+    }
+
+    private void ResetGame()
+    {
+        Game.ResetGame();
+    }
+}
+
+

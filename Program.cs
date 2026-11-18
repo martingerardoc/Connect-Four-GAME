@@ -1,6 +1,9 @@
 using Connect_Four_GAME.Components;
+using Connect_Four_GAME.Components.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<GameState>();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
