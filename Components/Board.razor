@@ -1,13 +1,14 @@
+@using System.Drawing
 @using Connect_Four_GAME.Components.Models
 @inject GameState Game
 
 <HeadContent>
     <style>
-            :root {
-                --board-bg: #facc15;
-                --player1: #ef4444;
-                --player2: #2563eb;
-            }
+        :root {
+            --board-bg: @ColorTranslator.ToHtml(BoardColor);
+            --player1: @ColorTranslator.ToHtml(Player1Color);
+            --player2: @ColorTranslator.ToHtml(Player2Color);
+        }
     </style>
 </HeadContent>
 
@@ -33,25 +34,43 @@
         }
     </p>
 
-    <div class="board">
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p class="error-message">@errorMessage</p>
+    }
+
+    <nav class="drop-controls">
         @for (var column = 0; column < GameState.Columns; column++)
         {
             var selectedColumn = column;
 
-            <div class="game-column" @onclick="() => PlayColumn(selectedColumn)" title="Click to drop a piece">
-
-                @for (var row = 0; row < GameState.Rows; row++)
-                {
-                    var position = row * GameState.Columns + selectedColumn;
-                    var piece = Game.Pieces[position];
-
-                    <span class="container">
-                        <span class="@(piece == 1 ? "player1" : piece == 2 ? "player2" : "")">
-                        </span>
-                    </span>
-                }
-            </div>
+            <span title="Click to play a piece" @onclick="() => PlayColumn(selectedColumn)">
+                🔽
+            </span>
         }
+    </nav>
+
+    <div class="board-stage">
+        <div class="board">
+            @for (var column = 0; column < GameState.Columns; column++)
+            {
+                <div class="game-column">
+                    @for (var row = 0; row < GameState.Rows; row++)
+                    {
+                        <span class="container">
+                            <span></span>
+                        </span>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="animated-pieces">
+            @for (var i = 0; i < 42; i++)
+            {
+                <span class="@pieces[i]"></span>
+            }
+        </div>
     </div>
 
     <button class="reset-button" @onclick="ResetGame">
@@ -60,14 +79,55 @@
 </div>
 
 @code {
+    [Parameter]
+    public Color BoardColor { get; set; } = ColorTranslator.FromHtml("yellow");
+
+    [Parameter]
+    public Color Player1Color { get; set; } = ColorTranslator.FromHtml("red");
+
+    [Parameter]
+    public Color Player2Color { get; set; } = ColorTranslator.FromHtml("blue");
+    private string[] pieces = new string[42];
+    private string errorMessage = string.Empty;
+
     private void PlayColumn(int column)
     {
-        Game.PlayPiece(column);
+        errorMessage = string.Empty;
+
+        int player = Game.CurrentPlayer;
+        int landingRow = -1;
+
+        // Find the lowest available position.
+        for (int row = GameState.Rows - 1; row >= 0; row--)
+        {
+            int index = row * GameState.Columns + column;
+
+            if (Game.Pieces[index] == 0)
+            {
+                landingRow = row;
+                break;
+            }
+        }
+
+        bool success = Game.PlayPiece(column);
+
+        if (!success)
+        {
+            errorMessage = "This column is full! Choose another column.";
+            return;
+        }
+
+        int turn = landingRow * GameState.Columns + column;
+
+        // Assign the player, column, and landing-row animation.
+        pieces[turn] = $"player{player} col{column} drop{landingRow + 1}";
     }
 
     private void ResetGame()
     {
         Game.ResetGame();
+        pieces = new string[42];
+        errorMessage = string.Empty;
     }
 }
 

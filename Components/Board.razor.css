@@ -1,8 +1,18 @@
 
+/* ========================================
+   GAME CONTAINER
+======================================== */
+
 .game-container {
     text-align: center;
     padding: 25px 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
+
+/* ========================================
+   GAME TITLE AND DESCRIPTION
+======================================== */
 
 .game-title {
     color: #1e3a8a;
@@ -22,194 +32,215 @@
     letter-spacing: 1px;
 }
 
-div {
-    position: relative;
-}
-
-nav {
-    top: 4em;
-    width: 30em;
-    display: inline-flex;
-    flex-direction: row;
-    margin-left: 10px;
-}
-
-nav span {
-    width: 4em;
-    text-align: center;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-div.board {
-    margin-top: 1em;
-    width: 30em;
-    height: 24em;
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    row-gap: 0;
-    border-left: 10px solid var(--board-bg);
-    position: relative;
-    z-index: 1;
-    pointer-events: auto;
-}
-
-span.container {
-    width: 4em;
-    height: 4em;
-    margin: 0;
-    padding: 4px;
-    overflow: hidden;
-    background-color: transparent;
-    position: relative;
-    z-index: 1;
-    pointer-events: auto;
-}
-
-.container span {
-    width: 3.5em;
-    height: 3.5em;
-    border-radius: 50%;
-    box-shadow: 0 0 0 3em var(--board-bg);
-    left: 0;
-    position: absolute;
-    display: block;
-    z-index: 5;
-    pointer-events: none;
-}
-
-.player1,
-.player2 {
-    width: 3.5em;
-    height: 3.5em;
-    border-radius: 50%;
-    left: 0;
-    top: 0;
-    position: absolute;
-    display: block;
-    z-index: -8;
-}
-
-.player1 {
-    background-color: var(--player1);
-    animation-timing-function: cubic-bezier(.5,.05,1,.5);
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    box-shadow: 0 0 0 4px var(--player1);
-}
-
-.player2 {
-    background-color: var(--player2);
-    animation-timing-function: cubic-bezier(.5,.05,1,.5);
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    box-shadow: 0 0 0 4px var(--player2);
-}
-
-.col0 { left: calc(0em + 9px); }
-.col1 { left: calc(4em + 9px); }
-.col2 { left: calc(8em + 9px); }
-.col3 { left: calc(12em + 9px); }
-.col4 { left: calc(16em + 9px); }
-.col5 { left: calc(20em + 9px); }
-.col6 { left: calc(24em + 9px); }
-
-.drop1 {
-    animation-duration: 1s;
-    animation-name: drop1;
-}
-
-.drop2 {
-    animation-duration: 1.5s;
-    animation-name: drop2;
-}
-
-.drop3 {
-    animation-duration: 1.6s;
-    animation-name: drop3;
-}
-
-.drop4 {
-    animation-duration: 1.7s;
-    animation-name: drop4;
-}
-
-.drop5 {
-    animation-duration: 1.8s;
-    animation-name: drop5;
-}
-
-.drop6 {
-    animation-duration: 1.9s;
-    animation-name: drop6;
-}
-
-@keyframes drop1 {
-    100%, 75%, 90%, 97% { transform: translateY(1.27em); }
-    80% { transform: translateY(.4em); }
-    95% { transform: translateY(.8em); }
-    99% { transform: translateY(1em); }
-}
-
-@keyframes drop2 {
-    100%, 75%, 90%, 97% { transform: translateY(5.27em); }
-    80% { transform: translateY(3.8em); }
-    95% { transform: translateY(4.6em); }
-    99% { transform: translateY(4.9em); }
-}
-
-@keyframes drop3 {
-    100%, 75%, 90%, 97% { transform: translateY(9.27em); }
-    80% { transform: translateY(7.2em); }
-    95% { transform: translateY(8.3em); }
-    99% { transform: translateY(8.8em); }
-}
-
-@keyframes drop4 {
-    100%, 75%, 90%, 97% { transform: translateY(13.27em); }
-    80% { transform: translateY(10.6em); }
-    95% { transform: translateY(12em); }
-    99% { transform: translateY(12.7em); }
-}
-
-@keyframes drop5 {
-    100%, 75%, 90%, 97% { transform: translateY(17.27em); }
-    80% { transform: translateY(14em); }
-    95% { transform: translateY(15.7em); }
-    99% { transform: translateY(16.5em); }
-}
-
-@keyframes drop6 {
-    100%, 75%, 90%, 97% { transform: translateY(21.27em); }
-    80% { transform: translateY(17.4em); }
-    95% { transform: translateY(19.4em); }
-    99% { transform: translateY(20.4em); }
-}
-
-
 .game-status {
     margin: 15px 0;
     font-size: 1.2rem;
     color: #1e3a8a;
 }
 
+.error-message {
+    color: #dc2626;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+/* ========================================
+   DROP CONTROLS
+======================================== */
+
+.drop-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 30em;
+    margin: 0 auto;
+    transform: translateX(-10px);
+}
+
+.drop-controls span {
+    width: 4em;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1em;
+    user-select: none;
+}
+
+.drop-controls span:hover {
+    transform: scale(1.15);
+}
+
+/* ========================================
+   BOARD POSITIONING
+======================================== */
+
+.board-stage {
+    position: relative;
+    width: 30em;
+    height: 24em;
+    margin: 1em auto 0;
+}
+
+.board {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 30em;
+    height: 24em;
+    margin: 0;
+    overflow: hidden;
+    border-left: 10px solid var(--board-bg);
+    z-index: 1;
+    pointer-events: auto;
+}
+
+/* ========================================
+   BOARD COLUMNS AND HOLES
+======================================== */
 
 .game-column {
     display: flex;
     flex-direction: column;
+    flex: 0 0 4em;
     width: 4em;
     height: 24em;
-    cursor: pointer;
     position: relative;
+    cursor: pointer;
     z-index: 2;
 }
 
+.container {
+    position: relative;
+    display: block;
+    flex: 0 0 4em;
+    width: 4em;
+    height: 4em;
+    box-sizing: border-box;
+    padding: 4px;
+    overflow: hidden;
+    background-color: transparent;
+    z-index: 1;
+    pointer-events: auto;
+}
 
-.game-column:hover .container span:not(.player1):not(.player2) {
+.container span {
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    width: 3.5em;
+    height: 3.5em;
+    border-radius: 50%;
+    background-color: transparent;
+    box-shadow: 0 0 0 3em var(--board-bg);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.game-column:hover .container span {
     background-color: rgba(255, 255, 255, 0.5);
 }
+
+/* ========================================
+   ANIMATED PIECES
+======================================== */
+
+.animated-pieces {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 28em;
+    height: 24em;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.animated-pieces > span {
+    position: absolute;
+    top: -4em;
+}
+
+/* Player colors */
+
+.player1,
+.player2 {
+    position: absolute;
+    display: block;
+    width: 3.5em;
+    height: 3.5em;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    z-index: 4;
+    animation-timing-function: cubic-bezier(.5, .05, 1, .5);
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.player1 {
+    background-color: var(--player1);
+    box-shadow: 0 0 0 4px var(--player1);
+}
+
+.player2 {
+    background-color: var(--player2);
+    box-shadow: 0 0 0 4px var(--player2);
+}
+
+/* ========================================
+   COLUMN POSITIONS
+======================================== */
+
+.col0 { left: 0; }
+.col1 { left: 4em; }
+.col2 { left: 8em; }
+.col3 { left: 12em; }
+.col4 { left: 16em; }
+.col5 { left: 20em; }
+.col6 { left: 24em; }
+
+/* ========================================
+   FALLING ANIMATION SETTINGS
+======================================== */
+
+.drop1 { animation: drop1 1s ease-in forwards; }
+.drop2 { animation: drop2 1s ease-in forwards; }
+.drop3 { animation: drop3 1s ease-in forwards; }
+.drop4 { animation: drop4 1s ease-in forwards; }
+.drop5 { animation: drop5 1s ease-in forwards; }
+.drop6 { animation: drop6 1s ease-in forwards; }
+
+/* ========================================
+   FALLING ANIMATION KEYFRAMES
+======================================== */
+
+@keyframes drop1 {
+    to { transform: translateY(4em); }
+}
+
+@keyframes drop2 {
+    to { transform: translateY(8em); }
+}
+
+@keyframes drop3 {
+    to { transform: translateY(12em); }
+}
+
+@keyframes drop4 {
+    to { transform: translateY(16em); }
+}
+
+@keyframes drop5 {
+    to { transform: translateY(20em); }
+}
+
+@keyframes drop6 {
+    to { transform: translateY(24em); }
+}
+
+/* ========================================
+   RESET BUTTON
+======================================== */
 
 .reset-button {
     margin-top: 20px;
@@ -227,3 +258,22 @@ span.container {
     background-color: #1d4ed8;
 }
 
+/* ========================================
+   RESPONSIVE LAYOUT
+======================================== */
+
+@media (max-width: 550px) {
+    .game-container {
+        overflow-x: auto;
+    }
+
+    .game-title {
+        font-size: 1.8rem;
+    }
+
+    .board-stage,
+    .drop-controls {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
