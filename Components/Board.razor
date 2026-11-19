@@ -39,43 +39,69 @@
         <p class="error-message">@errorMessage</p>
     }
 
-    <nav class="drop-controls">
-        @for (var column = 0; column < GameState.Columns; column++)
-        {
-            var selectedColumn = column;
+    <div class="game-layout">
+    <div class="board-section">
 
-            <span title="Click to play a piece" @onclick="() => PlayColumn(selectedColumn)">
-                🔽
-            </span>
-        }
-    </nav>
-
-    <div class="board-stage">
-        <div class="board">
+        <nav class="drop-controls">
             @for (var column = 0; column < GameState.Columns; column++)
             {
-                <div class="game-column">
-                    @for (var row = 0; row < GameState.Rows; row++)
-                    {
-                        <span class="container">
-                            <span></span>
-                        </span>
-                    }
-                </div>
+                var selectedColumn = column;
+
+                <span title="Click to play a piece"
+                      @onclick="() => PlayColumn(selectedColumn)">
+                    🔽
+                </span>
             }
+        </nav>
+
+        <div class="board-stage">
+            <div class="board">
+                @for (var column = 0; column < GameState.Columns; column++)
+                {
+                    <div class="game-column">
+                        @for (var row = 0; row < GameState.Rows; row++)
+                        {
+                            <span class="container">
+                                <span></span>
+                            </span>
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="animated-pieces">
+                @for (var i = 0; i < 42; i++)
+                {
+                    <span class="@pieces[i]"></span>
+                }
+            </div>
         </div>
 
-        <div class="animated-pieces">
-            @for (var i = 0; i < 42; i++)
-            {
-                <span class="@pieces[i]"></span>
-            }
-        </div>
+        <button class="reset-button" @onclick="ResetGame">
+            New Game
+        </button>
     </div>
 
-    <button class="reset-button" @onclick="ResetGame">
-        New Game
-    </button>
+    <div class="move-history">
+        <h4>Move History</h4>
+
+        @if (moveHistory.Count > 0)
+        {
+            <ol>
+                @foreach (var move in moveHistory)
+                {
+                    <li>@move</li>
+                }
+            </ol>
+        }
+        else
+        {
+            <p>No moves yet. Start playing!</p>
+        }
+    </div>
+</div>
+
+
 </div>
 
 @code {
@@ -89,6 +115,7 @@
     public Color Player2Color { get; set; } = ColorTranslator.FromHtml("blue");
     private string[] pieces = new string[42];
     private string errorMessage = string.Empty;
+    private List<string> moveHistory = new();
 
     private void PlayColumn(int column)
     {
@@ -121,12 +148,14 @@
 
         // Assign the player, column, and landing-row animation.
         pieces[turn] = $"player{player} col{column} drop{landingRow + 1}";
+        moveHistory.Add($"Move {moveHistory.Count + 1}: Player {player} - Column {column + 1}");
     }
 
     private void ResetGame()
     {
         Game.ResetGame();
         pieces = new string[42];
+        moveHistory.Clear();
         errorMessage = string.Empty;
     }
 }
